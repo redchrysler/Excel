@@ -1,0 +1,25 @@
+{
+  "name": "excel",
+  "version": "1.0.0",
+  "description": "Pure JS Excel App",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/redchrysler/excel.git"
+  },
+  "keywords": [
+    "JS",
+    "JavaScript",
+    "Excel"
+  ],
+  "author": "RedChrysler",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/redchrysler/excel/issues"
+  },
+  "homepage": "https://github.com/redchrysler/excel#readme",
+  "private": true
+}
