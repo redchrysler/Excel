@@ -10,15 +10,16 @@ class Dom {
     }
     return this.$el.outerHTML.trim()
   }
+
   text(text) {
-    if (typeof text === 'string') {
+    if (typeof text !== 'undefined') {
       this.$el.textContent = text
       return this
     }
-    if (this.$el.tagName.toLoweCase() === 'input') {
-      return this.$el.value.trim();
+    if (this.$el.tagName.toLowerCase() === 'input') {
+      return this.$el.value.trim()
     }
-    return this.$el.textContent.trim();
+    return this.$el.textContent.trim()
   }
 
   clear() {
@@ -26,7 +27,6 @@ class Dom {
     return this
   }
 
-  // Аналог addEventListener
   on(eventType, callback) {
     this.$el.addEventListener(eventType, callback)
   }
@@ -35,10 +35,15 @@ class Dom {
     this.$el.removeEventListener(eventType, callback)
   }
 
+  find(selector) {
+    return $(this.$el.querySelector(selector))
+  }
+
   append(node) {
     if (node instanceof Dom) {
       node = node.$el
     }
+
     if (Element.prototype.append) {
       this.$el.append(node)
     } else {
@@ -60,12 +65,47 @@ class Dom {
     return this.$el.getBoundingClientRect()
   }
 
-  find(selector) {
-    return $(this.$el.querySelector(selector))
-  }
-
   findAll(selector) {
     return this.$el.querySelectorAll(selector)
+  }
+
+  css(styles = {}) {
+    Object
+        .keys(styles)
+        .forEach(key => {
+          this.$el.style[key] = styles[key]
+        })
+  }
+
+  getStyles(styles = []) {
+    return styles.reduce((res, s) => {
+      res[s] = this.$el.style[s]
+      return res
+    }, {})
+  }
+
+  id(parse) {
+    if (parse) {
+      const parsed = this.id().split(':')
+      return {
+        row: +parsed[0],
+        col: +parsed[1]
+      }
+    }
+    return this.data.id
+  }
+
+  focus() {
+    this.$el.focus()
+    return this
+  }
+
+  attr(attrName, value) {
+    if (value) {
+      this.$el.setAttribute(attrName, value)
+      return this
+    }
+    return this.$el.getAttribute(attrName)
   }
 
   addClass(className) {
@@ -77,28 +117,8 @@ class Dom {
     this.$el.classList.remove(className)
     return this
   }
-
-  css(styles = {}) {
-    Object.keys(styles).forEach( (key) => {
-      this.$el.style[key] = styles[key]
-    })
-  }
-  id(parse) {
-    if (parse) {
-      const parsed = this.id().split(":")
-      return {
-        row: +parsed[0],
-        col: +parsed[1]
-      }
-    }
-    return this.data.id
-  }
-  focus() {
-    this.$el.focus()
-    return this
-  }
 }
-// event.target
+
 export function $(selector) {
   return new Dom(selector)
 }

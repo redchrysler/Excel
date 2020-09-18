@@ -14,7 +14,8 @@
     "quotes": "off",
     "max-len": "off",
     "comma-dangle": "off",
-    "semi": "off"
+    "semi": "off",
+    "arrow-parens": "off"
   },
   "extends": ["eslint:recommended", "google"]
 }

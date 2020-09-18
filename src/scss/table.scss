@@ -65,29 +65,36 @@
       z-index: 2;
     }
   }
+
   .col-resize, .row-resize {
     position: absolute;
     bottom: 0;
     right: 0;
-    opacity: 0;
     background: $primary-color;
+    opacity: 0;
+    z-index: 1000;
+
+    &:hover {
+      opacity: 1!important;
+    }
   }
-.col-resize {
-  top: 0;
-  width: 4px;
-  z-index: 1000;
-  &:hover {
-    opacity: 1!important;
-    cursor: col-resize;
+
+  .col-resize {
+    top: 0;
+    width: 4px;
+
+    &:hover {
+      cursor: col-resize;
+    }
   }
-}
+
   .row-resize {
     left: 0;
     height: 4px;
-    z-index: 1000;
+
     &:hover {
-      opacity: 1!important;
       cursor: row-resize;
     }
   }
+
 }
