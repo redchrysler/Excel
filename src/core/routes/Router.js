@@ -1,40 +1,44 @@
-import {$} from "@core/dom";
-import {ActiveRoute} from "@core/routes/ActiveRoute";
-// import {ActiveRoute} from "@core/routes/ActiveRoute";
+import {$} from '@core/dom'
+import {ActiveRoute} from '@core/routes/ActiveRoute'
 
 export class Router {
-    constructor(selector, routes) {
-        if (!selector) {
-            throw new Error('Selector is not provided in Router')
-        }
-        this.$placeholder = $(selector)
-        this.routes = routes
-
-        this.page = null
-
-        this.changePageHandler = this.changePageHandler.bind(this)
-
-        this.init()
+  constructor(selector, routes) {
+    if (!selector) {
+      throw new Error('Selector is not provided in Router')
     }
-    init() {
-        window.addEventListener('hashchange', this.changePageHandler)
-        this.changePageHandler()
-    }
-    changePageHandler() {
-        if (this.page) {
-            this.destroy()
-        }
-        this.$placeholder.clear()
-        // TODO: Сделать переключение между различными страницами.
-        const Page = (ActiveRoute.path.includes('excel')) ? this.routes.excel :this.routes.dashboard
 
-        this.page = new Page(ActiveRoute.param)
+    this.$placeholder = $(selector)
+    this.routes = routes
 
-        this.$placeholder.append(this.page.getRoot())
+    this.page = null
 
-        this.page.afterRender()
+    this.changePageHandler = this.changePageHandler.bind(this)
+
+    this.init()
+  }
+
+  init() {
+    window.addEventListener('hashchange', this.changePageHandler)
+    this.changePageHandler()
+  }
+
+  changePageHandler() {
+    if (this.page) {
+      this.page.destroy()
     }
-    destroy() {
-        window.removeEventListener('hashchange', this.changePageHandler)
-    }
+
+    this.$placeholder.clear()
+
+    const Page = ActiveRoute.path.includes('excel') ? this.routes.excel : this.routes.dashboard
+
+    this.page = new Page(ActiveRoute.param)
+
+    this.$placeholder.append(this.page.getRoot())
+
+    this.page.afterRender()
+  }
+
+  destroy() {
+    window.removeEventListener('hashchange', this.changePageHandler)
+  }
 }

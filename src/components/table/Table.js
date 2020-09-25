@@ -6,7 +6,7 @@ import {isCell, matrix, nextSelector, shouldResize} from './table.functions'
 import {TableSelection} from '@/components/table/TableSelection'
 import * as actions from '@/redux/actions'
 import {defaultStyles} from '@/constants'
-import {parse} from "@core/parse";
+import {parse} from '@core/parse'
 
 export class Table extends ExcelComponent {
   static className = 'excel__table'
@@ -33,9 +33,9 @@ export class Table extends ExcelComponent {
     this.selectCell(this.$root.find('[data-id="0:0"]'))
 
     this.$on('formula:input', value => {
-        this.selection.current
-            .attr('data-value', value)
-            .text(parse(value))
+      this.selection.current
+          .attr('data-value', value)
+          .text(parse(value))
       this.updateTextInStore(value)
     })
 
@@ -56,7 +56,6 @@ export class Table extends ExcelComponent {
     this.selection.select($cell)
     this.$emit('table:select', $cell)
     const styles = $cell.getStyles(Object.keys(defaultStyles))
-    console.log('Styles to dispatch', styles)
     this.$dispatch(actions.changeStyles(styles))
   }
 

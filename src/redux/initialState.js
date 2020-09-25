@@ -1,5 +1,5 @@
 import {defaultStyles, defaultTitle} from '@/constants'
-import {clone} from "@core/utils";
+import {clone} from '@core/utils'
 
 const defaultState = {
   title: defaultTitle,
@@ -9,16 +9,15 @@ const defaultState = {
   stylesState: {},
   currentText: '',
   currentStyles: defaultStyles,
+  openedDate: new Date().toJSON()
 }
 
 const normalize = state => ({
   ...state,
   currentStyles: defaultStyles,
-  currentText: '',
-  openedDate: new Date().toJSON()
+  currentText: ''
 })
 
-
-export function normalizeInitualState(state) {
+export function normalizeInitialState(state) {
   return state ? normalize(state) : clone(defaultState)
 }

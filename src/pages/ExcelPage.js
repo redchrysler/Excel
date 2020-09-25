@@ -1,44 +1,45 @@
+import {Page} from '@core/Page'
+import {createStore} from '@core/createStore'
+import {rootReducer} from '@/redux/rootReducer'
+import {debounce, storage} from '@core/utils'
 import {Excel} from '@/components/excel/Excel'
 import {Header} from '@/components/header/Header'
 import {Toolbar} from '@/components/toolbar/Toolbar'
 import {Formula} from '@/components/formula/Formula'
 import {Table} from '@/components/table/Table'
-import {createStore} from '@core/createStore'
-import {rootReducer} from '@/redux/rootReducer'
-import {storage, debounce} from '@core/utils'
-import {normalizeInitualState} from '@/redux/initialState'
-import {Page} from "@core/Page";
+import {normalizeInitialState} from '@/redux/initialState'
 
-function storageName(params) {
-    return `excel:` + params
+function storageName(param) {
+  return 'excel:' + param
 }
 
 export class ExcelPage extends Page {
-    getRoot() {
-        const params = this.params ? this.params : Date.now().toString()
-        const state = storage(storageName(params))
-        const initualState = normalizeInitualState(state)
-        const store = createStore(rootReducer, initualState)
+  getRoot() {
+    const params = this.params ? this.params : Date.now().toString()
 
-        const stateListener = debounce((state) => {
-            console.log('App State: ', state)
-            storage(storageName(params), state)
-            }, 300)
+    const state = storage(storageName(params))
+    const initialState = normalizeInitialState(state)
+    const store = createStore(rootReducer, initialState)
 
-        store.subscribe(stateListener)
+    const stateListener = debounce(state => {
+      storage(storageName(params), state)
+    }, 300)
 
-        this.excel = new Excel({
-        components: [Header, Toolbar, Formula, Table],
-        store
-        })
+    store.subscribe(stateListener)
 
-        return this.excel.getRoot()
-        }
+    this.excel = new Excel({
+      components: [Header, Toolbar, Formula, Table],
+      store
+    })
 
-        afterRender() {
-            this.excel.init()
-        }
-        destroy() {
-            this.excel.destroy()
-        }
+    return this.excel.getRoot()
+  }
+
+  afterRender() {
+    this.excel.init()
+  }
+
+  destroy() {
+    this.excel.destroy()
+  }
 }
